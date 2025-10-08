@@ -1,30 +1,41 @@
 import { useState } from "react"
+import axios from "axios"
+import React from "react";
 
 function Form() {
-    const [name, setName] = useState()
-    const [repo, setRepo] = useState()
-    const [group, setGroup] = useState()
+    const [name, setName] = useState();
+    const [repo, setRepo] = useState();
+    const [group, setGroup] = useState();
+    const API_URL = 'https://server-for-forms-zqx1.onrender.com/submit';
 
-    function HandleSubmit(e) {
+    function HandleSubmit(e: React.FormEvent) {
         e.preventDefault()
-        console.log(name)
-        console.log(repo)
-        console.log(group)
+        axios.post(API_URL, {
+            nome: name,
+            link: repo,
+            turma: group 
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
     }
     
 
     return (
         <form action="POST" onSubmit={HandleSubmit}>
             <fieldset>
-                <input type="text" onChange={(e)=> setName(e.target.value)}/>
+                <input required type="text" onChange={(e)=> setName(e.target.value)}/>
                 <label htmlFor="nome">Nome do Aluno</label>
             </fieldset>
             <fieldset>
-                <input type="text" onChange={(e)=> setRepo(e.target.value)}/>
+                <input required type="text" onChange={(e)=> setRepo(e.target.value)}/>
                 <label htmlFor="repositório">Link do Repositório</label>
             </fieldset>
             <fieldset>
-                <input type="text" onChange={(e)=> setGroup(e.target.value)}/>
+                <input required type="text" onChange={(e)=> setGroup(e.target.value)}/>
                 <label htmlFor="turma">Turma</label>
             </fieldset>
             <button type="submit">
